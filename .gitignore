@@ -1,0 +1,9 @@
+Debug/
+Release/
+*.o
+*.bin
+*.elf
+*.map
+__pycache__/
+*.pyc
+.vscode/
