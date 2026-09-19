@@ -41,6 +41,44 @@ data/       Recorded ECG samples for offline testing
 - [ ] Q-learning escalation policy
 - [ ] Digital twin for simulated biological parameters
 
+## Key Code Snippet — Event-Driven Acquisition
+
+The core of Tier 0 is interrupt-driven, not polled: the timer and DMA move
+ADC samples on their own, and the CPU only wakes up twice per buffer cycle.
+
+```c
+// Timer2 triggers the ADC at 250 Hz; DMA moves samples with zero CPU polling
+#define ECG_BUF 250
+uint16_t adcBuf[ECG_BUF];
+volatile uint8_t halfReady = 0, fullReady = 0;
+
+void HAL_ADC_ConvHalfCpltCallback(ADC_HandleTypeDef* h) { halfReady = 1; }
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* h)     { fullReady = 1; }
+
+// in main():
+HAL_TIM_Base_Start(&htim2);
+HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adcBuf, ECG_BUF);
+
+// in the while(1) loop — only runs when a buffer half is actually full:
+if (halfReady) {
+    halfReady = 0;
+    for (int i = 0; i < ECG_BUF/2; i++) {
+        int n = sprintf(line, "%u\n", adcBuf[i]);
+        HAL_UART_Transmit(&huart1, (uint8_t*)line, n, 10);
+    }
+}
+```
+
+The full firmware project is in [`firmware/`](firmware/); the Python live-plotting
+script that consumes this stream is in [`python/live_plot.py`](python/live_plot.py).
+
+## How to Run
+
+1. Flash `firmware/ecg` onto the STM32F401 via STM32CubeIDE + ST-LINK
+2. Wire the AD8232 and USB-to-TTL as described in [`docs/wiring.md`](docs/wiring.md)
+3. `pip install -r python/requirements.txt`
+4. `python3 python/live_plot.py` (update the `PORT` variable to match your machine)
+
 ## Team
 - Akanksha Kumari — Software
 - Nishayini K — Software
