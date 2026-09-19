@@ -27,3 +27,21 @@ the signal demands it, keeping the MCU asleep most of the time.
   tiers to balance detection sensitivity against energy cost.
 
 ## Repository Structure
+firmware/   STM32CubeIDE project (acquisition + signal processing)
+python/     Live plotting, offline analysis, Q-learning training
+docs/       Problem statement, wiring guide, architecture diagram
+data/       Recorded ECG samples for offline testing
+
+## Status
+- [x] ADC + DMA + Timer acquisition chain
+- [x] UART streaming to laptop
+- [x] Live plotting in Python
+- [ ] Tier 1 R-peak detection (CMSIS-DSP)
+- [ ] Tier 2 morphology classifier
+- [ ] Q-learning escalation policy
+- [ ] Digital twin for simulated biological parameters
+
+## Team
+- Akanksha Kumari — Software
+- Nishayini K — Software
+- Theertha Santosh — Hardware
