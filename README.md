@@ -25,6 +25,7 @@ the signal demands it, keeping the MCU asleep most of the time.
   on sustained anomalies.
 - A Q-learning agent, trained offline on MIT-BIH, governs escalation between
   tiers to balance detection sensitivity against energy cost.
+![Architecture Diagram](docs/architecture.png)
 
 ## Repository Structure
 firmware/   STM32CubeIDE project (acquisition + signal processing)
