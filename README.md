@@ -69,9 +69,6 @@ if (halfReady) {
 }
 ```
 
-The full firmware project is in [`firmware/`](firmware/); the Python live-plotting
-script that consumes this stream is in [`python/live_plot.py`](python/live_plot.py).
-
 ## How to Run
 
 1. Flash `firmware/ecg` onto the STM32F401 via STM32CubeIDE + ST-LINK
