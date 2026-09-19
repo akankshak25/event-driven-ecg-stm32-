@@ -15,6 +15,7 @@ the signal demands it, keeping the MCU asleep most of the time.
 - Breadboard + M-M jumper wires
 
 ## Architecture
+![Architecture Diagram](docs/architecture.png)
 - **Tier 0 (always-on gate):** Timer + ADC + DMA sample the ECG at 250 Hz with
   the CPU asleep. Lead-off detection filters out invalid signal.
 - **Tier 1 (per-beat):** Filtering and R-peak detection using CMSIS-DSP,
@@ -25,7 +26,6 @@ the signal demands it, keeping the MCU asleep most of the time.
   on sustained anomalies.
 - A Q-learning agent, trained offline on MIT-BIH, governs escalation between
   tiers to balance detection sensitivity against energy cost.
-![Architecture Diagram](docs/architecture.png)
 
 ## Repository Structure
 firmware/   STM32CubeIDE project (acquisition + signal processing)
